@@ -8,7 +8,7 @@ services:
     ports:
       - 6379
   postgres:
-    image: postgres
+    image: nickblah/postgis:11-bullseye-postgis-3
     environment:
       POSTGRES_DB: weg-li_development
       POSTGRES_HOST_AUTH_METHOD: trust
@@ -16,22 +16,25 @@ services:
       - 5432:5432
     volumes:
       - db_data:/var/lib/postgresql/data
-  app:
-    build: .
+  runner:
+    build:
+      context: .
     environment:
       RAILS_ENV: development
-    volumes:
-      - .:/app
-      - gem_cache:/usr/local/bundle/gems
-      - node_modules:/app/node_modules
-    env_file: .env
+      POSTGRES_HOST: postgres
     ports:
       - 3000:3000
+    volumes:
+      - .:/app
+      - bundle:/usr/local/bundle
+      - node_modules:/app/node_modules
     depends_on:
       - postgres
       - redis
-  
+    profiles:
+      - dev
+
 volumes:
-  gem_cache:
+  bundle:
   db_data:
   node_modules:

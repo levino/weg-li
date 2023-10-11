@@ -26,6 +26,8 @@
     "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
-    "lint": "NODE_ENV=development eslint --fix app/javascript/**"
+    "lint": "NODE_ENV=development eslint --fix app/javascript/**",
+    "bootstrap": "docker-compose run runner bin/setup",
+    "docker": "docker-compose run --service-ports runner"
   }
 }
